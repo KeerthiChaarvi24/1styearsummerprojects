@@ -2,3 +2,8 @@
     color:black;
     font-size:40px;
 }
+.panda-image {
+    height: 300px;
+    width: 400px;
+    border-radius:50px;
+}
