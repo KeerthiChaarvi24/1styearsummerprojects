@@ -1,0 +1,53 @@
+.images {
+    height: 200px;
+    width: 300px;
+    border-radius:2px;
+    object-fit: cover;
+    display: block;
+}
+.video-title {
+    font-size:25px;
+    font-weight: bold;
+    font-family:Ariel;
+}
+.video-author {
+    font-size:15px;
+    font-family:Ariel;
+    color:gray;
+}
+.video-stats {
+    font-size:15px;
+    font-family:Ariel;
+    color:gray;
+
+}
+.video-info-grid {
+    width: 300px;
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    vertical-align: top;
+    margin:10px;
+}
+.image-preview {
+    width: 50px;
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    vertical-align: top;
+    margin :10px;
+}
+.pfp{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.video-info{
+    display: grid;
+    grid-template-columns: 200px;
+    vertical-align: top;
+}
+.about-title {
+    height: 100px;
+    width: 100%;
+    contain : cover;
+}
