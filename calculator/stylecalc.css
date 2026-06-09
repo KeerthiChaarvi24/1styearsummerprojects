@@ -19,6 +19,7 @@ body {
     text-align: left;
     border: none;
     background-color: rgb(70, 62, 62);
+    color: white;
 }
 #keys {
     display: grid;
