@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cart</title>
+</head>
+
+<body>
+
+<h1>Your Cart</h1>
+
+{% for item in items %}
+
+<p>
+
+    {{ item[0] }}
+    -
+    Rs. {{ item[1] }}
+
+</p>
+
+{% endfor %}
+
+<hr>
+
+<h2>Total Bill = Rs. {{ total }}</h2>
+
+<a href="/">
+    Back To Menu
+</a>
+
+</body>
+</html>

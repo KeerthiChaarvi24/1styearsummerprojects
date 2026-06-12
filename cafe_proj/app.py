@@ -1,21 +1,81 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
+import sqlite3
 
 app = Flask(__name__)
 
-@app.route('/')
+
+@app.route("/")
 def home():
-    return render_template('index.html')
 
-@app.route('/order', methods=['POST'])
+    conn = sqlite3.connect("cafe.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM products")
+    products = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "index.html",
+        products=products
+    )
+
+
+@app.route("/order", methods=["POST"])
 def order():
-    prices={
-        "Coffee":250,
-        "Cookie":99,
-        "Cake":150
-    }
-    item = request.form['item']
-    price=prices[item]
-    return f"You selected {item} cost {price}"
 
-if __name__ == '__main__':
+    product_id = request.form["product_id"]
+
+    conn = sqlite3.connect("cafe.db")
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "INSERT INTO cart(product_id) VALUES(?)",
+        (product_id,)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/")
+
+
+@app.route("/cart")
+def cart():
+
+    conn = sqlite3.connect("cafe.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT products.name,
+           products.price
+    FROM cart
+    JOIN products
+    ON cart.product_id = products.id
+    """)
+
+    items = cursor.fetchall()
+
+    cursor.execute("""
+    SELECT SUM(products.price)
+    FROM cart
+    JOIN products
+    ON cart.product_id = products.id
+    """)
+
+    total = cursor.fetchone()[0]
+
+    conn.close()
+
+    if total is None:
+        total = 0
+
+    return render_template(
+        "cart.html",
+        items=items,
+        total=total
+    )
+
+
+if __name__ == "__main__":
     app.run(debug=True)

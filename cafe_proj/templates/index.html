@@ -3,46 +3,49 @@
 
 <head>
     <title>Cafe Billing System</title>
-    <link rel="stylesheet"
-      href="{{ url_for('static',
-      filename='styles.css') }}">
 </head>
 
 <body>
-<form action="/order" method="POST">
-    <div>
-         <img src="{{url_for('static',filename='images/coffee.jpg')}}" width="200">
-         <h2>Coffee</h2>
-         <p>Rs. 250</p>
-            <button type="submit"
-                    name="item"
-                    value="Coffee">
-            order Coffee
-        </button>
-    </div>
-    <div>
-         <img src="{{url_for('static',filename='images/cookie.jpg')}}" width="200">
-         <h2>Cookie</h2>
-         <p>Rs. 99</p>
-            <button type="submit"
-                    name="item"
-                    value="Cookie">
-        order Cookie
-    </button>
-    </div>
-    <div>
-         <img src="{{url_for('static',filename='images/cake.jpg')}}" width="200">
-         <h2>Cake</h2>
-         <p>Rs. 150</p>
-            <button type="submit"
-                    name="item"
-                    value="Cake">
-        order Cake
-    </button>
-    </div>
 
-</form>
+<h1>Cafe Menu</h1>
+
+{% for product in products %}
+
+<div>
+
+    <img
+        src="{{ url_for('static',
+        filename='images/' + product[3]) }}"
+        width="200">
+
+    <h2>{{ product[1] }}</h2>
+
+    <p>Rs. {{ product[2] }}</p>
+
+    <form action="/order" method="POST">
+
+        <input
+            type="hidden"
+            name="product_id"
+            value="{{ product[0] }}">
+
+        <button type="submit">
+            Add To Cart
+        </button>
+
+    </form>
+
+</div>
+
+<hr>
+
+{% endfor %}
+
+<a href="/cart">
+    View Cart
+</a>
 
 </body>
+</html>
 
 </html>
