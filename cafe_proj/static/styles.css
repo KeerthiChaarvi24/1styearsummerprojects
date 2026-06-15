@@ -2,6 +2,9 @@ body {
     text-align: center;
      font-family: Arial;
 }
+head {
+    border: 1px
+}
 div {
     border: 1px;
     border-color:black;

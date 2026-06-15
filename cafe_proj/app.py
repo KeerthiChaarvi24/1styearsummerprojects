@@ -1,25 +1,27 @@
 from flask import Flask, render_template, request, redirect
-import sqlite3
+import mysql.connector
 
 app = Flask(__name__)
-
 
 @app.route("/")
 def home():
 
-    conn = sqlite3.connect("cafe.db")
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="imsocool24@13",
+        database="cafe_db"
+    )
+
     cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM products")
+
     products = cursor.fetchall()
 
     conn.close()
 
-    return render_template(
-        "index.html",
-        products=products
-    )
-
+    return str(products)
 
 @app.route("/order", methods=["POST"])
 def order():
