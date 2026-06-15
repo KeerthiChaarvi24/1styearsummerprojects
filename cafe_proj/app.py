@@ -10,7 +10,7 @@ def home():
         host="localhost",
         user="root",
         password="imsocool24@13",
-        database="cafe_db"
+        database="cafe"
     )
 
     cursor = conn.cursor()
