@@ -3,36 +3,43 @@ import mysql.connector
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
 
-    conn = mysql.connector.connect(
+def get_db_connection():
+    return mysql.connector.connect(
         host="localhost",
         user="root",
         password="imsocool24@13",
         database="cafe"
     )
 
+
+@app.route("/")
+def home():
+
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM products")
-
     products = cursor.fetchall()
 
     conn.close()
 
-    return str(products)
+    return render_template(
+        "index.html",
+        products=products
+    )
+
 
 @app.route("/order", methods=["POST"])
 def order():
 
     product_id = request.form["product_id"]
 
-    conn = sqlite3.connect("cafe.db")
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     cursor.execute(
-        "INSERT INTO cart(product_id) VALUES(?)",
+        "INSERT INTO cart(product_id) VALUES(%s)",
         (product_id,)
     )
 
@@ -45,7 +52,7 @@ def order():
 @app.route("/cart")
 def cart():
 
-    conn = sqlite3.connect("cafe.db")
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -67,10 +74,10 @@ def cart():
 
     total = cursor.fetchone()[0]
 
-    conn.close()
-
     if total is None:
         total = 0
+
+    conn.close()
 
     return render_template(
         "cart.html",
