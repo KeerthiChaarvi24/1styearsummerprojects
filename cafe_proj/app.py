@@ -56,7 +56,8 @@ def cart():
     cursor = conn.cursor()
 
     cursor.execute("""
-    SELECT products.name,
+    SELECT cart.id,
+            products.name,
            products.price
     FROM cart
     JOIN products
@@ -84,6 +85,15 @@ def cart():
         items=items,
         total=total
     )
+@app.route("/remove", methods=["POST"])
+def remove():
+    conn=get_db_connection()
+    cursor=conn.cursor()
+    cart_id=request.form("cart_id")
+    cursor.execute("""delete from cart where id= %s""",(cart_id,))
+    conn.commit()
+    conn.close()
+    return redirect("/cart")
 
 
 if __name__ == "__main__":

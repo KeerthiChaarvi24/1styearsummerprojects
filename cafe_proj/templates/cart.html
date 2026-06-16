@@ -13,11 +13,24 @@
 
 <p>
 
-    {{ item[0] }}
+    {{ item[1] }}
     -
-    Rs. {{ item[1] }}
+    Rs. {{ item[2] }}
 
 </p>
+{% endfor %}
+
+{% for item in items%}
+<form action="/remove" method="POST">
+    <input
+            type="hidden"
+            name="cart_id"
+            value="{{ item[0] }}">
+
+        <button type="submit">
+            Remove item
+        </button>
+</form>
 
 {% endfor %}
 
