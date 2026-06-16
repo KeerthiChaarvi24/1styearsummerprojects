@@ -18,9 +18,7 @@
     Rs. {{ item[2] }}
 
 </p>
-{% endfor %}
 
-{% for item in items%}
 <form action="/remove" method="POST">
     <input
             type="hidden"
@@ -31,9 +29,7 @@
             Remove item
         </button>
 </form>
-
 {% endfor %}
-
 <hr>
 
 <h2>Total Bill = Rs. {{ total }}</h2>

@@ -89,7 +89,7 @@ def cart():
 def remove():
     conn=get_db_connection()
     cursor=conn.cursor()
-    cart_id=request.form("cart_id")
+    cart_id=request.form.get("cart_id")
     cursor.execute("""delete from cart where id= %s""",(cart_id,))
     conn.commit()
     conn.close()
