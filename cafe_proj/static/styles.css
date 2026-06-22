@@ -1,6 +1,7 @@
 body {
     text-align: center;
      font-family: Arial;
+     background-color: beige;
 }
 div {
     border: 1px;
@@ -10,4 +11,9 @@ div {
     margin:auto;
     padding:15px;
     width:250px
+}
+.btn {
+    border-color:black;
+    color:aqua;
+    border-radius: 15px;
 }
