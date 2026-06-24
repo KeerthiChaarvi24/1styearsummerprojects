@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    Customer Dashboard
+</head>
+<body>
+    <h1>Customer Details</h1>
+    <p>Name: {{customer[1]}}</p>
+    <p>Email: {{customer[2]}}</p>
+    <p>Phone: {{customer[3]}}</p>
+    <br>
+    <h2> Order History</h2>
+    {% if orders %}
+        {% for orders in orders %}
+            <p> {{order}} </p>
+        {% endfor %}
+    {% else %}
+        <p> No orders found</p>
+    {% endif %}
+
+    <h1>Welcome {{ customer[1] }}</h1>
+
+    <form action="/add_expense/{{ customer[0] }}" method="POST">
+
+        <input
+            type="number"
+            name="spendings"
+            placeholder="Amount"
+            required
+        >
+
+        <input
+            type="text"
+            name="spent_on"
+            placeholder="Spent On"
+            required
+        >
+
+        <button type="submit">
+            Add Expense
+        </button>
+
+    </form>
+
+    <h2>Expense History</h2>
+
+    {% for expense in expenses %}
+
+    <p>
+        ₹{{ expense[2] }}
+        -
+        {{ expense[3] }}
+    </p>
+
+    {% endfor %}
+</body>
+</html>

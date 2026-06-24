@@ -21,32 +21,46 @@ def home():
 def login():
     email=request.form['email']
     phone=request.form['phone']
+    name=request.form['name']
     cursor.execute("select * from customers where email=%s or phone=%s",(email,phone))
     customer=cursor.fetchone()
+    # fetching only the id from customers table and if it exists setting customer_id=customer[0] which is id
     if customer:
         customer_id=customer[0]
     else:
-        cursor.execute("insert into customers(name, email, phone) values (%s, %s, %s)"(name, email, phone))
+        cursor.execute("insert into customers(name, email, phone) values (%s, %s, %s)",(name, email, phone))
         db.commit()
         customer_id=cursor.lastrowid
     return redirect(f'/customer/{customer_id}')
 
-@app.route('/customer/<int:customer_id')
+@app.route('/order/<int:customer_id>')
+def order_page(customer_id):
+    return render_template('orders.html',customer_id=customer_id)
+
+@app.route('/customer/<int:customer_id>')
 def customer_dashboard(customer_id):
     cursor.execute("select * from customers where id = %s",(customer_id,))
     customer=cursor.fetchone()
-    cursor.execute("select( * from orders where customer_id= %s",(customer_id))
-    orders=cursor.fetchall()
-    return render-template('customer.html', customer=customer,orders=orders)
+    cursor.execute("select * from dailytracker where customer_id= %s",(customer_id,))
+    expenses=cursor.fetchall()
+    return render_template('customer.html', customer=customer,expenses=expenses)
+@app.route('/add_expense/<int:customer_id>', methods=['POST'])
+def add_expense(customer_id):
 
-@app.route('/add',methods=['POST'])
-def add_expenses():
-    spendings=request.form['spendings']
-    spent_on=request.form['spent_on']
-    query="insert into dailytracker(spendings, spent_on) values(%s ,%s)"
-    cursor.execute(query,(spendings,spent_on))
+    spendings = request.form['spendings']
+    spent_on = request.form['spent_on']
+
+    cursor.execute(
+        """
+        INSERT INTO dailytracker
+        (customer_id, spendings, spent_on)
+        VALUES (%s, %s, %s)
+        """,
+        (customer_id, spendings, spent_on)
+    )
+
     db.commit()
-    return redirect('/')
 
+    return redirect(f'/customer/{customer_id}')
 if __name__ == "__main__":
     app.run(debug=True)
