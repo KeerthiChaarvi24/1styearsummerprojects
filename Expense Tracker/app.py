@@ -9,7 +9,7 @@ db= mysql.connect(
     user="root",
     password="imsocool24@13",
     database="ExpenseTracker")
-cursor=db.cursor()
+cursor=db.cursor(buffered=True)
     
 
 @app.route('/')
@@ -22,7 +22,7 @@ def login():
     email=request.form['email']
     phone=request.form['phone']
     name=request.form['name']
-    cursor.execute("select * from customers where email=%s or phone=%s",(email,phone))
+    cursor.execute("select * from customers where email=%s or phone=%s limit 1",(email,phone))
     customer=cursor.fetchone()
     # fetching only the id from customers table and if it exists setting customer_id=customer[0] which is id
     if customer:
@@ -33,9 +33,7 @@ def login():
         customer_id=cursor.lastrowid
     return redirect(f'/customer/{customer_id}')
 
-@app.route('/order/<int:customer_id>')
-def order_page(customer_id):
-    return render_template('orders.html',customer_id=customer_id)
+
 
 @app.route('/customer/<int:customer_id>')
 def customer_dashboard(customer_id):
@@ -44,23 +42,15 @@ def customer_dashboard(customer_id):
     cursor.execute("select * from dailytracker where customer_id= %s",(customer_id,))
     expenses=cursor.fetchall()
     return render_template('customer.html', customer=customer,expenses=expenses)
+
+
 @app.route('/add_expense/<int:customer_id>', methods=['POST'])
 def add_expense(customer_id):
-
     spendings = request.form['spendings']
     spent_on = request.form['spent_on']
-
-    cursor.execute(
-        """
-        INSERT INTO dailytracker
-        (customer_id, spendings, spent_on)
-        VALUES (%s, %s, %s)
-        """,
-        (customer_id, spendings, spent_on)
-    )
-
+    cursor.execute("""insert into dailytracker (customer_id, spendings, spent_on) VALUES (%s, %s, %s)""",(customer_id, spendings, spent_on))
     db.commit()
-
     return redirect(f'/customer/{customer_id}')
+
 if __name__ == "__main__":
     app.run(debug=True)

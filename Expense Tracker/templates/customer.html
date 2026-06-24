@@ -9,14 +9,6 @@
     <p>Email: {{customer[2]}}</p>
     <p>Phone: {{customer[3]}}</p>
     <br>
-    <h2> Order History</h2>
-    {% if orders %}
-        {% for orders in orders %}
-            <p> {{order}} </p>
-        {% endfor %}
-    {% else %}
-        <p> No orders found</p>
-    {% endif %}
 
     <h1>Welcome {{ customer[1] }}</h1>
 
