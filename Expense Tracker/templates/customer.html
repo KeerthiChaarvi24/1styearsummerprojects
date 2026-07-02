@@ -1,49 +1,91 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    Customer Dashboard
+
+    <title>💰 Expense Tracker | Customer Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 </head>
+
 <body>
-    <h1>Customer Details</h1>
-    <p>Name: {{customer[1]}}</p>
-    <p>Email: {{customer[2]}}</p>
-    <p>Phone: {{customer[3]}}</p>
-    <br>
 
-    <h1>Welcome {{ customer[1] }}</h1>
+    <!-- Everything is now inside ONE container -->
+    <div class="container">
 
-    <form action="/add_expense/{{ customer[0] }}" method="POST">
+        <h1>💰 Expense Tracker</h1>
+        <h2>Welcome, {{ customer[1] }} 👋</h2>
 
-        <input
-            type="number"
-            name="spendings"
-            placeholder="Amount"
-            required
-        >
+        <hr>
 
-        <input
-            type="text"
-            name="spent_on"
-            placeholder="Spent On"
-            required
-        >
+        <h3>👤 Customer Information</h3>
 
-        <button type="submit">
-            Add Expense
-        </button>
+        <p><strong>Name:</strong> {{ customer[1] }}</p>
+        <p><strong>Email:</strong> {{ customer[2] }}</p>
+        <p><strong>Phone:</strong> {{ customer[3] }}</p>
 
-    </form>
+        <hr>
 
-    <h2>Expense History</h2>
+        <!-- CHANGE 6: Add Expense Section -->
+        <h3>➕ Add Expense</h3>
 
-    {% for expense in expenses %}
+        <form action="/add_expense/{{ customer[0] }}" method="POST">
 
-    <p>
-        ₹{{ expense[2] }}
-        -
-        {{ expense[3] }}
-    </p>
+            <label>Amount</label>
+            <input
+                type="number"
+                name="spendings"
+                placeholder="Enter Amount"
+                required
+            >
 
-    {% endfor %}
+            <label>Spent On</label>
+            <input
+                type="text"
+                name="spent_on"
+                placeholder="Example: Coffee, Lunch, Shopping"
+                required
+            >
+
+            <button type="submit">
+                Add Expense
+            </button>
+
+        </form>
+
+        <hr>
+
+        <h3>📋 Expense History</h3>
+
+        <!-- If there are no expenses -->
+        {% if expenses %}
+
+        <table>
+
+            <tr>
+                <th>Amount</th>
+                <th>Spent On</th>
+            </tr>
+
+            {% for expense in expenses %}
+
+            <tr>
+                <td>₹{{ expense[2] }}</td>
+                <td>{{ expense[3] }}</td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+        {% else %}
+
+            <p>No expenses added yet.</p>
+
+        {% endif %}
+
+    </div>
+
 </body>
+
 </html>
